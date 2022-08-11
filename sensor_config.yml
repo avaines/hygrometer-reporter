@@ -1,0 +1,37 @@
+#sensor_config
+
+targets:
+  - target: example
+    options:
+      option: "some string"
+
+  - target: prometheus-push
+    options:
+      host: "localhost"
+      port: 9091
+
+  - target: innodb
+    options:
+      host: "localhost"
+      port: 0000e
+
+
+sensors:
+  - name: ex_1
+    type: example
+    poll_interval: 5
+    targets:
+      - example
+
+  - name: dot_1
+    type: wa64-dot
+    poll_interval: 5
+    targets:
+      - example
+    options:
+      id:  "63:06:00:00:09:b2"
+
+  - name: office
+    type: hive
+    poll_interval: 60
+    options:
