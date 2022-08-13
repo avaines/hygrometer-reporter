@@ -1,37 +1,59 @@
-#sensor_config
+# Sensor_config
 
+##########
+# Target #
+##########
 targets:
-  - target: example
+  # - target: example
+  #   options:
+  #     option: "some string"
+
+  - target: csv_dot_1
     options:
-      option: "some string"
+      path: "/etc/grafana/sensor1.csv"
 
-  - target: prometheus-push
+  - target: csv_dot_2
     options:
-      host: "localhost"
-      port: 9091
+      path: "/etc/grafana/sensor2.csv"
 
-  - target: innodb
-    options:
-      host: "localhost"
-      port: 0000e
+  # - target: prometheus-push
+  #   options:
+  #     host: "localhost"
+  #     port: 9091
+
+  # - target: innodb
+  #   options:
+  #     host: "localhost"
+  #     port: 0000e
 
 
+###########
+# Sensors #
+###########
 sensors:
-  - name: ex_1
-    type: example
-    poll_interval: 5
-    targets:
-      - example
+  # - name: ex_1
+  #   type: example
+  #   poll_interval: 10
+  #   targets:
+  #     - example
 
   - name: dot_1
     type: wa64-dot
-    poll_interval: 5
+    poll_interval: 300
     targets:
-      - example
+      - csv_dot_1
     options:
       id:  "63:06:00:00:09:b2"
-
-  - name: office
-    type: hive
-    poll_interval: 60
+  
+  - name: dot_2
+    type: wa64-dot
+    poll_interval: 300
+    targets:
+      - csv_dot_2
     options:
+      id: "62:1e:00:00:0d:74"
+
+  # - name: office
+  #   type: hive
+  #   poll_interval: 60
+  #   options:
