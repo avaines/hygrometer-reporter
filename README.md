@@ -10,7 +10,7 @@ The sensors should be more or less commodity devices, initially I built this to 
 The original targets are 
 - basic CSV file
 - Prometheus Push-to-Gateway
-- Influx DB
+- InfluxDB
 
 ## Dirty install script
  - configure `sensor_config.yml`

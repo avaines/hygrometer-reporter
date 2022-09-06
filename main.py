@@ -42,8 +42,23 @@ def initalise():
                 elif target['target'] == "prometheus-push":
                     print("Initialising Prometheus (Push To Gatway)")
 
-                elif target['target'] == "innodb":
-                    print("Initialising Innodb")
+                    from targets.prometheus_push_to_gateway import PrometheusPushToGateway
+                    target_instances[target['target']] = PrometheusPushToGateway(
+                        server = target['options']['host'],
+                        port = target['options']['port'],
+                    )
+
+                elif target['target'] == "influxdb":
+                    print("Initialising InfluxDB")
+
+                    from targets.influxdb import InfluxDbTarget
+                    target_instances[target['target']] = InfluxDbTarget(
+                        server = target['options']['host'],
+                        port = target['options']['port'],
+                        database = target['options']['database'],
+                        username = target['options']['username'],
+                        password = target['options']['password'],
+                    )
 
                 else:
                     print("Error: %s is an unknown target" % (target['target']))
