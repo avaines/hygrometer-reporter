@@ -1,0 +1,64 @@
+######
+# Sensor_config
+######
+
+# Global Settings
+debug: True
+
+#####################
+# Target Configuration
+#####################
+targets:
+  # - target: example
+  #   options:
+  #     option: "some string"
+
+  - target: csv_dot_1
+    options:
+      path: "/etc/grafana/sensor1.csv"
+
+  - target: csv_dot_2
+    options:
+      path: "/etc/grafana/sensor2.csv"
+
+  - target: prometheus-push
+    options:
+      host: "localhost"
+      port: 9091
+
+  - target: influxdb
+    options:
+      host: "localhost"
+      port: 8086
+      database: hygrometer
+      username: administrator
+      password: Administrator1
+
+
+######################
+# Sensor Configuration
+######################
+sensors:
+  # - name: ex_1
+  #   type: example
+  #   poll_interval: 10
+  #   targets:
+  #     - example
+
+  - name: dot_1
+    type: oria-thermobeacon
+    poll_interval: 600
+    targets:
+      - csv_dot_1
+      # - prometheus-push
+    options:
+      id:  "63:06:00:00:09:b2"
+  
+  - name: dot_2
+    type: oria-thermobeacon
+    poll_interval: 600
+    targets:
+      # - csv_dot_2
+      - influxdb
+    options:
+      id: "62:1e:00:00:0d:74"

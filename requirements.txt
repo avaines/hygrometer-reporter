@@ -1,0 +1,4 @@
+pyyaml
+bluepy
+prometheus_client
+influxdb
