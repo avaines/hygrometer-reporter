@@ -1,12 +1,17 @@
 #!/usr/bin/python3
+
 from unicodedata import name
 import yaml
 import time
 
-DEBUG=True
-target_instances={}
-sensor_instances={}
-sensor_targets={}
+target_instances = {}
+sensor_instances = {}
+sensor_targets = {}
+
+with open("sensor_config.yml", "r") as stream:
+    config = yaml.safe_load(stream)
+    DEBUG = config["debug"] if 'debug' in config else False
+    if DEBUG: print("Debugging enabled")
 
 def initalise():
     with open("sensor_config.yml", "r") as stream:
@@ -51,16 +56,16 @@ def initalise():
                     from sensors.example import ExampleSensor
                     sensor_targets[sensor['name']] = sensor['targets']
                     sensor_instances[sensor['name']] = ExampleSensor(
-                        sensor['name'],
-                        sensor['poll_interval']
+                        name = sensor['name'],
+                        poll_interval = sensor['poll_interval']
                     )
 
-                elif sensor['type'] == 'wa64-dot':
-                    print("Sensor %s is a wa64-dot, starting collection" % (sensor['name']))
+                elif sensor['type'] == 'oria-thermobeacon':
+                    print("Sensor %s is a oria-thermobeacon, starting collection" % (sensor['name']))
 
-                    from sensors.wa64_dot import WA64HygrometerDot
+                    from sensors.oria_thermobeacon_dot import OriaThermoBeaconSensor
                     sensor_targets[sensor['name']] = sensor['targets']
-                    sensor_instances[sensor['name']] = WA64HygrometerDot(
+                    sensor_instances[sensor['name']] = OriaThermoBeaconSensor(
                         name = sensor['name'],
                         id = sensor['options']['id'],
                         poll_interval = sensor['poll_interval']
@@ -78,7 +83,6 @@ def initalise():
             if DEBUG: print("sensor_config.yml could not be loaded")
             print(exc)
 
-
 def main():
     while True:
         for si in sensor_instances:
@@ -88,15 +92,16 @@ def main():
             # If the poll_interval and the next_poll_in_seconds are the same, it means its either the very first one or the latest tick
             if this_sensor_instance.next_poll_in_seconds == this_sensor_instance.poll_interval:
                 
-                if DEBUG: print (" Submitting tmp:%i hum:%i bat:%i" % (this_sensor_instance.temp_summary, this_sensor_instance.hum_summary, this_sensor_instance.bat_sensor))
+                if DEBUG: print (" Submitting tmp:%i hum:%i bat:%i up:%i" % (this_sensor_instance.temp_sensor, this_sensor_instance.hum_sensor, this_sensor_instance.bat_sensor, this_sensor_instance.uptime))
                 
                 for st in sensor_targets[si]:
                     # For each of the targets for this sensor, submit the readings
                     target_instances[st].submit_readings(
                         name = this_sensor_instance.sensor_name,
-                        temp = this_sensor_instance.temp_summary,
-                        hum = this_sensor_instance.hum_summary,
+                        temp = this_sensor_instance.temp_sensor,
+                        hum = this_sensor_instance.hum_sensor,
                         bat = this_sensor_instance.bat_sensor,
+                        up = this_sensor_instance.uptime,
                     )
 
             # How long till the next tick for this sensor?

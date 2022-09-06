@@ -1,8 +1,13 @@
+######
 # Sensor_config
+######
 
-##########
-# Target #
-##########
+# Global Settings
+debug: True
+
+#####################
+# Target Configuration
+#####################
 targets:
   # - target: example
   #   options:
@@ -27,9 +32,9 @@ targets:
   #     port: 0000e
 
 
-###########
-# Sensors #
-###########
+######################
+# Sensor Configuration
+######################
 sensors:
   # - name: ex_1
   #   type: example
@@ -38,22 +43,17 @@ sensors:
   #     - example
 
   - name: dot_1
-    type: wa64-dot
-    poll_interval: 300
+    type: oria-thermobeacon
+    poll_interval: 10 #600
     targets:
       - csv_dot_1
     options:
       id:  "63:06:00:00:09:b2"
   
   - name: dot_2
-    type: wa64-dot
-    poll_interval: 300
+    type: oria-thermobeacon
+    poll_interval: 10 #600
     targets:
       - csv_dot_2
     options:
       id: "62:1e:00:00:0d:74"
-
-  # - name: office
-  #   type: hive
-  #   poll_interval: 60
-  #   options:

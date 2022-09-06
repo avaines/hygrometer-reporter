@@ -1,3 +1,11 @@
 pyyaml
 bluepy
 prometheus_client
+
+
+# # Hive
+# pyhiveapi
+
+# # ThermoBeacon-pyhap
+# pyhap
+# HAP-python
